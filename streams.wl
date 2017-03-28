@@ -23,14 +23,14 @@ emptyStreamQ[s_] := s === Null;
 
 (* Format streams as a list of the first two elements and an ellipsis indicating a promise for the rest. *)
 Format[Stream[a_, b_]] := If[streamQ@b,
-"{" <> ToString@a <> "," <> ToString@sFirst@b <> ",...}",
-"{" <> ToString@a <> ",...}"]
+  "{" <> ToString@a <> "," <> ToString@sFirst@b <> ",...}",
+  "{" <> ToString@a <> ",...}"]
 
 
 (* Define a sRange function, like Range[] but for streams. *)
 sRange[low_, high_] := If[low>high,
-theEmptyStream,
-makeStream[low, sRange[low+1, high]]];
+  theEmptyStream,
+  makeStream[low, sRange[low+1, high]]];
 sRange[high_] := sRange[1, high];
 
 
@@ -42,15 +42,14 @@ sRef[s_, n_]/;n>0 := sRef[sRest@s, n-1];
 (* Like Map but for streams, implemented using recursion. *)
 sMap[proc_, theEmptyStream] := theEmptyStream;
 sMap[proc_, s_] := makeStream[proc[sFirst@s],
-sMap[proc, sRest@s]];
+  sMap[proc, sRest@s]];
 
 
 (* Select out the elements of stream subject to the condition pred. *)
 sSelect[s_/;emptyStreamQ[s], pred_] := theEmptyStream;
-sSelect[s_, pred_] := If[
-pred[sFirst@s],
-makeStream[sFirst@s, sSelect[sRest@s, pred]],
-sSelect[sRest@s, pred]]
+sSelect[s_, pred_] := If[pred[sFirst@s],
+  makeStream[sFirst@s, sSelect[sRest@s, pred]],
+  sSelect[sRest@s, pred]];
 
 
 (* Take the first n elements of a stream. *)
