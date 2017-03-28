@@ -1,10 +1,12 @@
 # *Mathematica* Streams
 
-A simple, lightweight implementation of streams (lazily evaluated lists) in *Mathematica*. A stream is represented as a linked list whose tail is left unevaluated until the list is walked.
+A simple, lightweight implementation of streams (lazily evaluated lists) in *Mathematica*. A stream is represented as a recursively-defined, singly-linked list whose tail is left unevaluated until the list is walked. This data structure is based on the traditional list of Lisp dialects, and more specifically the implementation of streams in Scheme.
+
+This is more of an exercise in creating data structures in *Mathematica* rather than a practical tool, but feel free to use it as you like.
 
 ### Constructors and Methods
 
-The function `makeStream` creates a stream.
+The function `makeStream` creates a two-component data structure whose head is evaluated and whose tail is not, call it a *two-stream*. The tail of a two-stream could be either an atomic expression, `theEmptyStream` or another two-stream. Streams are two-streams whose tails are two-streams, and are thus constructed recursively:
 ```mathematica
 integersFrom[n_] := makeStream[n, integersFrom[n + 1]];
 sNaturals = integersFrom[1];
@@ -31,6 +33,6 @@ sSelect[sRange[10^4, 10^6], PrimeQ@#&]//sRef[#,3]&
 ```
 differ by four orders of magnitude.
 
-### Todos
+### Issues
 
-Currently the evaluation of the `sRest` of a stream does not memoize the `sFirst@sRest` of the stream. This leads to performance issues: in many cases the same elements of the stream will need to be accessed multiple times and in this case memoization provides a good optimization. 
+Accessing the nth element of a linked-list is an O(n) operation, so finding the last prime in the interval from ten thousand to one million would be slower using streams as implemented here compared to generating the whole *Mathematica* list first. Regardless, these streams may still be useful for recursive procedures.

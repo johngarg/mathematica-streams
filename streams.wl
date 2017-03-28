@@ -5,6 +5,7 @@ Print["Mathematica-Streams v1.0: A simple, lightweight implementation of streams
 
 (* The implementation relies heavily on tail-call optimised recursion *)
 $RecursionLimit = Infinity;
+$IterationLimit = Infinity;
 
 
 (* Delay the evaluation of the tail of the stream. *)
