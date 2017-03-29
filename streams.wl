@@ -53,24 +53,30 @@ sSelect[s_, pred_] := If[pred[sFirst@s],
   sSelect[sRest@s, pred]];
 
 
-(* Display the stream as a Mathematica list *)
+(* Take the first n elements of the stream and output as a Mathematica list *)
 sTake[theEmptyStream,l_] := l;
 sTake[s_, l_, n_] := sTake[sRest@s, Append[l, sFirst@s], n-1];
 sTake[s_, l_, 0] := l;
 sTake[s_, n_] := sTake[s, {}, n];
 
 
+(* Take the elements of the stream while pred is true and output as Mathematica list *)
+sTakeWhile[pred_, s_] := If[pred[sFirst@s], 
+  Prepend[sTakeWhile[pred, sRest@s], sFirst@s],
+  {}];
+
+
 (* Some useful streams. *)
 
 (* The set of integers and natural numbers. *)
-integersFrom[n_] := makeStream[n, integersFrom[n+1]];
-sNaturals = integersFrom[1];
+naturalGenerator[n_] := makeStream[n, naturalGenerator[n+1]];
+sNaturals = naturalGenerator[1];
 
 (* Fibonacci *)
 fibGenerator[a_, b_] := makeStream[a, fibGenerator[b, a+b]];
 sFibs = fibGenerator[0, 1];
 
 (* A stream of Primes calculated using the Sieve of Eratosthenes *)
-primeSieve[s_] := makeStream[sFirst@s,
-primeSieve[sSelect[sRest@s,!(Divisible[#, sFirst@s])&]]];
-sPrimes = primeSieve[integersFrom@2];
+primeGenerator[s_] := makeStream[sFirst@s,
+  primeGenerator[sSelect[sRest@s,!(Divisible[#, sFirst@s])&]]];
+sPrimes = primeGenerator[naturalGenerator@2];

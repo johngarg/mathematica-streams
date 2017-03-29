@@ -8,18 +8,18 @@ This is more of an exercise in creating data structures in *Mathematica* rather 
 
 The function `makeStream` creates a two-component data structure whose head is evaluated and whose tail is not, call it a *two-stream*. The tail of a two-stream could be either an atomic expression, `theEmptyStream` or another two-stream. Streams are two-streams whose tails are two-streams, and are thus constructed recursively:
 ```mathematica
-integersFrom[n_] := makeStream[n, integersFrom[n + 1]];
-sNaturals = integersFrom[1];
+naturalGenerator[n_] := makeStream[n, naturalGenerator[n+1]];
+sNaturals = naturalGenerator[1];
 ```
 Upon evaluation the stream `sNaturals` is rendered in the notebook with the first two elements printed in curly braces along with an ellipsis: `{1, 2, ...}`.
 
 By convention, stream-related functions begin with a lowercase S. Thus, the regular methods of functional programming `Map`, `Select`, `First` and `Rest` have stream analogues `sMap`, `sSelect`, `sFirst` and `sRest`. For example, the Sieve of Eratosthenes could be implemented
 ```mathematica
-primeSieve[s_] := makeStream[sFirst@s,
-  primeSieve[sSelect[streamRest@s, !(Divisible[#, streamFirst@s])&]]];
-sPrimes = primeSieve[integersFrom@2];
+primeGenerator[s_] := makeStream[sFirst@s,
+  primeGenerator[sSelect[sRest@s,!(Divisible[#, sFirst@s])&]]];
+sPrimes = primeGenerator[naturalGenerator@2];
 ```
-where `sPrimes` evaluates to `{2, 3, ...}` in the notebook. The additional functions `sRef`, `sRange` and `sTake` are also provided.
+where `sPrimes` evaluates to `{2, 3, ...}` in the notebook. The additional functions `sRef`, `sRange`, `sTake` and `sTakeWhile` are also provided.
 
 ### Usage
 
