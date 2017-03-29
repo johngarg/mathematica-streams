@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-Print["Mathematica-Streams v1.0: A simple, lightweight implementation of streams (lazily evaluated lists) in Mathematica."];
+Print["Mathematica-Streams: A simple, lightweight implementation of streams (lazily evaluated lists) in Mathematica."];
 
 
 (* The implementation relies heavily on tail-call optimised recursion *)
@@ -53,15 +53,11 @@ sSelect[s_, pred_] := If[pred[sFirst@s],
   sSelect[sRest@s, pred]];
 
 
-(* Take the first n elements of a stream. *)
-sTake[s_, 0] := theEmptyStream;
-sTake[s_, n_]/;n>0 := makeStream[sFirst@s, sTake[sRest@s, n-1]];
-
-
 (* Display the stream as a Mathematica list *)
-streamToList[theEmptyStream,l_] := l;
-streamToList[s_,l_] := streamToList[sRest@s, Append[l, sFirst@s]];
-streamToList[s_] := streamToList[s, {}];
+sTake[theEmptyStream,l_] := l;
+sTake[s_, l_, n_] := sTake[sRest@s, Append[l, sFirst@s], n-1];
+sTake[s_, l_, 0] := l;
+sTake[s_, n_] := sTake[s, {}, n];
 
 
 (* Some useful streams. *)

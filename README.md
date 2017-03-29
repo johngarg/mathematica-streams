@@ -19,7 +19,7 @@ primeSieve[s_] := makeStream[sFirst@s,
   primeSieve[sSelect[streamRest@s, !(Divisible[#, streamFirst@s])&]]];
 sPrimes = primeSieve[integersFrom@2];
 ```
-where `sPrimes` evaluates to `{2, 3, ...}` in the notebook. The additional functions `sRef`, `streamToList`, `sRange` and `sTake` are also provided.
+where `sPrimes` evaluates to `{2, 3, ...}` in the notebook. The additional functions `sRef`, `sRange` and `sTake` are also provided.
 
 ### Usage
 
@@ -35,4 +35,4 @@ differ by four orders of magnitude.
 
 ### Issues
 
-Accessing the nth element of a linked-list is an O(n) operation, so finding the last prime in the interval from ten thousand to one million would be slower using streams as implemented here compared to generating the whole *Mathematica* list first. Regardless, these streams may still be useful for recursive procedures.
+Accessing the nth element of a linked-list is an O(n) operation, so finding the last prime in the interval from ten thousand to one million would be slower using streams as implemented here compared to generating the whole *Mathematica* list first.
