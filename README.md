@@ -16,7 +16,7 @@ Upon evaluation the stream `sNaturals` is rendered in the notebook with the firs
 By convention, stream-related functions begin with a lowercase S. Thus, the regular methods of functional programming `Map`, `Select`, `First` and `Rest` have stream analogues `sMap`, `sSelect`, `sFirst` and `sRest`. For example, the Sieve of Eratosthenes could be implemented
 ```mathematica
 primeGenerator[s_] := makeStream[sFirst@s,
-  primeGenerator[sSelect[sRest@s,!(Divisible[#, sFirst@s])&]]];
+  primeGenerator[sSelect[sRest@s, !(Divisible[#, sFirst@s])&]]];
 sPrimes = primeGenerator[naturalGenerator@2];
 ```
 where `sPrimes` evaluates to `{2, 3, ...}` in the notebook. The additional functions `sRef`, `sRange`, `sTake` and `sTakeWhile` are also provided.
@@ -29,7 +29,7 @@ Select[Range[10^4, 10^6], PrimeQ[#]&][[3]]
 ```
 and
 ```mathematica
-sSelect[sRange[10^4, 10^6], PrimeQ@#&]//sRef[#,3]&
+sSelect[sRange[10^4, 10^6], PrimeQ[#]&]//sRef[#, 3]&
 ```
 differ by four orders of magnitude.
 
